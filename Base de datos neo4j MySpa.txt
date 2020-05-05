@@ -1,0 +1,38 @@
+
+--------------------------------
+----BASE DE DATOS PARA NEO4J----
+--------------------------------
+
+CREATE
+	(Cl:Cliente {cod_cliente:"101", nombre:"Carlos Martinez", telefono:"321404", corre_cliente:"carlosm@gmail.com", eda_cliente:"30", cod_reserva:"9944"}),
+	(Lc:Cliente {cod_cliente:"202", nombre:"Lucia Camargo", telefono:"312303", corre_cliente:"luciac@gmail.com", eda_cliente:"41", cod_reserva:"9911"}),
+	(Gl:Cliente {cod_cliente:"303", nombre:"Guillermo Fernandez", telefono:"310444", corre_cliente:"guillermof@gmail.com", eda_cliente:"20", cod_reserva:"9933"}),
+ 	(Sf:Cliente {cod_cliente:"404", nombre:"Sofia Caicedo", telefono:"320888", corre_cliente:"sofiac@gmail.com", eda_cliente:"18", cod_reserva:"9922"}),
+ 
+	(Cm:Empleado {cod_empleado:"123", nombre:"Camila", telefono:"5680302", cat_empleado:"corporal"}),
+	(Ln:Empleado {cod_empleado:"156", nombre:"Lina", telefono:"5680302", cat_empleado:"belleza"}),
+	(Rt:Empleado {cod_empleado:"178", nombre:"Roberto", telefono:"5680302", cat_empleado:"salud"}),
+
+	(Ex:servicio {cod_servicio:"11", nombre:"Exfoliacion", valor:"50000", cod_empleado:"156", cod_cliente:"101", cat_servicio:"belleza"}),
+ 	(Mr:servicio {cod_servicio:"22", nombre:"Masaje Reductor", valor:"80000", cod_empleado:"123", cod_cliente:"202", cat_servicio:"corporal"}),
+	(Lf:servicio {cod_servicio:"33", nombre:"Limpieza Facial", valor:"30000", cod_empleado:"156", cod_cliente:"404", cat_servicio:"belleza"}),
+	(Tc:servicio {cod_servicio:"44", nombre:"TratamientoCorporal", valor:"70000", cod_empleado:"178", cod_cliente:"303", cat_servicio:"salud"}),
+
+	(Exr:reserva {cod_reserva:"9911",  nombre:"Exfoliacion",  cat_reserva: "belleza", valor:"25000", fecha:"2020 03 20", 
+	cod_cliente:"101",  cod_empleado:"156",  cod_servicio:"11"}),
+
+	(Mrr:reserva {cod_reserva:"9922",  nombre:"Masaje Reductor",  cat_reserva: "corporal", valor:"40000", fecha:"2020 05 15", 
+	cod_cliente:"202",  cod_empleado:"123",  cod_servicio:"22"}),
+
+	(Lfr:reserva {cod_reserva:"9933",  nombre:"Limpieza Facial",  cat_reserva: "belleza", valor:"15000", fecha:"2020 05 01", 
+	 cod_cliente:"404",  cod_empleado:"156",   cod_servicio:"33"}),
+
+	(Tcr:reserva {cod_reserva:"9944",  nombre:"Tratamiento Corporal",  cat_reserva: "salud", valor:"35000", fecha:"2020 05 13", 
+	cod_cliente:"303",  cod_empleado:"178",  cod_servicio:"44"})
+WITH 	Cl, Lc, Gl, Sf, Cm, Ln, Rt, Ex, Mr, Lf, Tc, Exr, Mrr, Lfr, Tcr
+CREATE 	(Cl)-[p:Solicita_Una]->(Ex), (Lc)-[p1:Solicita_Una]->(Mr),
+ 	(Gl)-[p2:Solicita_Una]->(Tc),  (Sf)-[p3:Solicita_Una]->(Lf),
+	(Cm)-[p4:atiende]->(Ex), (Ln)-[p5:atiende]->(Lf), (Rt)-[p6:atiende]->(Tc)
+SET     p.since=date("2001-02-01"),p1.since=date("2001-02-01"), p2.since=date("2001-02-01")
+RETURN p, p1, p2, p3, p4, p5, p6
+
